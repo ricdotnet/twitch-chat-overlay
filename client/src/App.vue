@@ -2,11 +2,10 @@
   <template v-if="tmiState.messages.length">
     <div v-for="(msg, index) of tmiState.messages" :key="index">
       <div class="message">
-        <div class="message__username" :style="[resolveUserColor(msg.tags)]">{{
-            msg.username
-          }}:
+        <div class="message__username" :style="[resolveUserColor(msg.tags)]">
+          {{ msg.username }}:
         </div>
-        <div>{{ msg.content }}</div>
+        <div class="flex message__message" v-html="msg.content"></div>
       </div>
     </div>
   </template>
@@ -33,6 +32,9 @@
     }
 
     &__message {
+      img {
+        @apply w-10 ml-0.5;
+      }
     }
   }
 </style>
