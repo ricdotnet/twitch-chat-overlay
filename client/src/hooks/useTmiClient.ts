@@ -1,28 +1,27 @@
 import { Client } from 'tmi.js';
 import { reactive } from 'vue';
 
-const emotes: any[] = [
-  {
-    keys: ['KEKW'],
+const keys: string[] = ['KEKW', 'xD', 'POG', 'noKeke', 'pepeDS', 'deezNuts'];
+const emotes: any = {
+  KEKW: {
     img: 'https://cdn.betterttv.net/emote/5e9c6c187e090362f8b0b9e8/1x',
   },
-  {
-    keys: ['xd', 'XD', 'xD'],
+  xD: {
     img: 'https://cdn.betterttv.net/emote/6121946776ea4e2b9f789acc/1x',
   },
-  {
-    keys: ['POG'],
+  POG: {
     img: 'https://cdn.betterttv.net/emote/5ff827395ef7d10c7912c106/1x',
   },
-  {
-    keys: ['kekNo'],
+  noKeke: {
     img: 'https://cdn.betterttv.net/emote/5eacf997d023b362f639d5b0/1x',
   },
-  {
-    keys: ['pepeDS'],
+  pepeDS: {
     img: 'https://cdn.betterttv.net/emote/5b444de56b9160327d12534a/1x',
+  },
+  deezNuts: {
+    img: 'https://cdn.betterttv.net/emote/5ecae6e6fdee545e30652525/1x'
   }
-];
+};
 
 function useTmiClient(): any[] {
   const client = new Client({
@@ -49,13 +48,28 @@ function useTmiClient(): any[] {
   });
 
   client.on('message', async (channel, tags, message, self) => {
-
     state.messages.push({
       username: tags.username,
-      content: await replaceHelper(message),
+      content: '&nbsp;' + await replaceHelper(message) + '&nbsp;',
       tags: tags,
     });
+
+    if ( state.messages.length === 1 ) {
+      await removeMessage();
+    }
   });
+
+  async function removeMessage() {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        state.messages.shift();
+        if ( state.messages.length ) {
+          return resolve(removeMessage());
+        }
+        return resolve(null);
+      }, 10000);
+    });
+  }
 
   return [state];
 }
@@ -65,19 +79,14 @@ async function replaceHelper(m: string): Promise<string> {
 
     const tokens = m.split(' ');
 
-    // todo: this is shit XD
-    for ( const emote of emotes ) {
-      for ( const key of emote.keys ) {
-        for (const token in tokens) {
-          if (tokens[token] === key) {
-            tokens[token] = `<img src="${emote.img}" />`;
-          }
-        }
+    for ( const token in tokens ) {
+      if ( keys.includes(tokens[token]) ) {
+        tokens[token] = `<img src="${emotes[tokens[token]].img}" alt="smh" /> `;
       }
     }
 
     let string = '';
-    for (const token of tokens) {
+    for ( const token of tokens ) {
       string += token + ' ';
     }
 
