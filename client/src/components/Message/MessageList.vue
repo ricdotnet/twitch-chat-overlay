@@ -3,9 +3,8 @@
     <div v-for="(msg, index) of tmiState.messages" :key="index">
       <div class="message">
         <div class="message__username">
-          <span :style="[resolveUserColor(msg.tags)]">{{ msg.username }}:</span> <span class="flex message__message" v-html="msg.content"></span>
+          <span :style="[resolveUserColor(msg.tags)]">{{ msg.username }}:</span> <span class="message__message" v-html="msg.content"></span>
         </div>
-<!--        <div class="flex message__message" v-html="msg.content"></div>-->
       </div>
     </div>
   </template>
@@ -25,13 +24,15 @@
 
 <style lang="scss">
   .message {
-    @apply bg-white text-4xl flex;
+    @apply bg-white text-4xl;
 
     &__username {
       @apply mr-2;
     }
 
     &__message {
+      @apply inline;
+
       img {
         @apply w-10 ml-0.5;
       }
