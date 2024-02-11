@@ -48,6 +48,10 @@ function useTmiClient(): any[] {
   });
 
   client.on('message', async (channel, tags, message, self) => {
+    if (state.messages.length >= 10) {
+      state.messages.shift();
+    }
+    
     state.messages.push({
       username: tags.username,
       content: '&nbsp;' + await replaceHelper(message) + '&nbsp;',
@@ -55,7 +59,7 @@ function useTmiClient(): any[] {
     });
 
     if ( state.messages.length === 1 ) {
-      await removeMessage();
+      // await removeMessage();
     }
   });
 

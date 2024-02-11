@@ -24,14 +24,14 @@
 
 <style lang="scss">
   .message {
-    @apply bg-white text-4xl;
+    @apply bg-transparent text-lg;
 
     &__username {
       @apply mr-2;
     }
 
     &__message {
-      @apply inline;
+      @apply inline text-white;
 
       img {
         @apply w-10 ml-0.5;

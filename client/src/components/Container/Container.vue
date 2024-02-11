@@ -8,6 +8,6 @@
 
 <style lang="scss">
   .container {
-    @apply bg-white px-5 py-3;
+    @apply bg-transparent px-5 py-3;
   }
 </style>
